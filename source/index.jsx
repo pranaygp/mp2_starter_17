@@ -2,17 +2,44 @@ import React from 'react';
 import {render} from 'react-dom';
 import {BrowserRouter as Router, Route, Link} from 'react-router-dom'
 import 'semantic-ui-css/semantic.min.css';
-
-// Include your new Components here
+import axios from 'axios';
+// Redux stuff
+import {createStore, combineReducers} from 'redux';
+import {Provider} from 'react-redux';
+import * as reducers from './redux/reducers'
+// Base Routes
 import Home from './components/Home/Home.jsx';
-
-// Include any new stylesheets here
-// Note that components' stylesheets should NOT be included here.
-// They should be 'require'd in their component class file.
+import Gallery from './components/Gallery/Gallery.jsx';
+// import Detail from './components/Detail/Detail.jsx';
+// Styles
 require('./styles/main.scss');
 
+const CLIENT_ID = '69f6f5f61dd84b0cbdc2567e27c166e5';
+const CLIENT_SECRET = 'ee9e0eccdaa4421e8d9600c8ce706453';
+
+const finalReducer = combineReducers(reducers);
+const store = createStore(finalReducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())
+
+// Connect to Spotify
+axios('https://spotify.aztec.website')
+    .then(({data}) => {
+        store.dispatch({
+            type: 'AUTH',
+            ...data
+        })
+    })
+    .catch(console.error)
+
 render(
-    <Home />,
+    <Provider store={store}>
+        <Router>
+            <div>
+                <Route exact path="/" component={Home} />
+                <Route path="/gallery" component={Gallery} />
+                {/* <Route path="/detail" component={Detail} /> */}
+            </div>
+        </Router>
+    </Provider>,
     // Define your router and replace <Home /> with it!
     document.getElementById('app')
 );

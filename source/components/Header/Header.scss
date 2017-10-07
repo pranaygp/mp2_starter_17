@@ -1,0 +1,15 @@
+.nav {
+  float: left;
+  list-style: none;
+  width: 100%;
+  padding: 0px;
+
+  li {
+    display: inline-block;
+    width: 48%;
+
+    a.active {
+      color: #ccc;
+    }
+  }
+}

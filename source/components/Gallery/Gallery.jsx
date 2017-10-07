@@ -2,17 +2,16 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import Header from '../Header/Header.jsx';
 
-import styles from './Home.scss'
+import styles from './Gallery.scss'
 
-class Home extends Component {
+class Gallery extends Component {
     render() {
         return(
-            <div className="Home">
+            <div className="Gallery">
                 <Header />
-                
             </div>
         )
     }
 }
 
-export default Home
+export default Gallery
