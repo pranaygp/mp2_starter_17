@@ -1,34 +1,32 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import PropTypes from 'prop-types';
-import {withRouter} from 'react-router-dom'
-import {connect} from 'react-redux';
-import { Image, List } from 'semantic-ui-react'
+import { connect } from 'react-redux';
+import Header from '../Header/Header.jsx';
 
-class SongList extends Component {
+import styles from './Song.scss'
 
-  renderSongs(songs = []) {
-    return songs.map((song, i) => (
-      <List.Item key={song.id} onClick={(e) => { this.props.history.push(`/song/${i}`) }}>
-        <Image width={100} height={100} src={song.album.images[0].url} />
-        <List.Content>
-          <List.Header>{song.name}</List.Header>
-          <List.Description>{song.artists.map(a => a.name).join(', ')}</List.Description>
-          <List.Description>{song.album.name}</List.Description>
-        </List.Content>
-      </List.Item>
-    ))
+class Song extends Component {
+
+  renderControls() {
+    const thisPage = Number(this.props.match.params.id);
+    const hasPrevPage = thisPage > 0;
+    const hasNextPage = thisPage < (this.props.songs.length - 1);
+    console.log(thisPage, hasPrevPage, hasNextPage)
+    return null
   }
 
   render() {
-    return (
-      <List relaxed='very' animated selection verticalAlign='middle'>
-        {this.renderSongs(this.props.songs)}
-      </List>
-    );
+    return(
+      <div className="Song">
+        <Header search={false}/>
+        {this.renderControls()}
+        <h3>ID: {this.props.match.params.id}</h3>
+      </div>
+    )
   }
 }
 
-SongList.propTypes = {
+Song.propTypes = {
   songs: PropTypes.arrayOf(
     PropTypes.shape({
       album: PropTypes.shape({
@@ -64,6 +62,6 @@ SongList.propTypes = {
   )
 }
 
-export default withRouter(connect(state => ({
+export default connect(state => ({
   songs: state.data.results
-}))(SongList));
+}))(Song)

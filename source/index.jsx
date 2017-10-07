@@ -1,6 +1,6 @@
 import React from 'react';
 import {render} from 'react-dom';
-import {BrowserRouter as Router, Route, Link} from 'react-router-dom'
+import {HashRouter as Router, Route, Link} from 'react-router-dom'
 import 'semantic-ui-css/semantic.min.css';
 import axios from 'axios';
 // Redux stuff
@@ -11,7 +11,7 @@ import { auth } from './redux/actions';
 // Base Routes
 import Home from './components/Home/Home.jsx';
 import Gallery from './components/Gallery/Gallery.jsx';
-// import Detail from './components/Detail/Detail.jsx';
+import Song from './components/Song/Song.jsx';
 // Styles
 require('./styles/main.scss');
 
@@ -31,7 +31,7 @@ render(
             <div>
                 <Route exact path="/" component={Home} />
                 <Route path="/gallery" component={Gallery} />
-                {/* <Route path="/detail" component={Detail} /> */}
+                <Route path="/song/:id" component={Song} />
             </div>
         </Router>
     </Provider>,

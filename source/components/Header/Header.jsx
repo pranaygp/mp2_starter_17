@@ -29,7 +29,7 @@ class MyHeader extends Component {
           <li><NavLink isActive={this.isActive} to="/" >List</NavLink></li>
           <li><NavLink isActive={this.isActive} to="/gallery">Gallery</NavLink></li>
         </ul>
-        <SearchBar />
+        {this.props.search !== false ? <SearchBar /> : null }
         {this.props.connected ? null : <Message negative>
           <Message.Header>Not connected to Spotify</Message.Header>
           <p>Trying to connect</p>
@@ -40,7 +40,8 @@ class MyHeader extends Component {
 }
 
 MyHeader.propTypes = {
-  connected: PropTypes.bool.isRequired
+  connected: PropTypes.bool.isRequired,
+  search: PropTypes.bool
 }
 
 export default connect(state => ({connected: state.spotify.connected}))(MyHeader);
