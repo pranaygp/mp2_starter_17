@@ -18,7 +18,7 @@ class MyHeader extends Component {
 
   render() {
     return (
-      <div>
+      <div className='Header'>
         <Header as='h2' icon textAlign='center'>
             <Icon name='search' circular />
             <Header.Content>
