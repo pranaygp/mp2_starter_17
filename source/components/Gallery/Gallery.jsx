@@ -72,6 +72,11 @@ Gallery.propTypes = {
       ),
       duration_ms: PropTypes.number,
       explicit: PropTypes.bool,
+      external_urls: PropTypes.arrayOf(
+        PropTypes.shape({
+          spotify: PropTypes.string
+        })
+      ),
       href: PropTypes.string,
       id: PropTypes.string,
       name: PropTypes.string.isRequired,

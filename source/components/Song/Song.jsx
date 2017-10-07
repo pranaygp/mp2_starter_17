@@ -24,32 +24,32 @@ class Song extends Component {
   render() {
     const thisPage = Number(this.props.match.params.id);
     const song = this.props.songs[thisPage];
+
     if(!song) {
       // missing data
       return <Redirect to='/' />
     }
+
+    const minLength = Math.floor(song.duration_ms / (60 * 1000));
+    const secLength = Math.floor((song.duration_ms % (60 * 1000))/1000);
+
+    console.log(song)
+
     return(
       <div className="Song">
         <MyHeader search={false}/>
-        <br />
         {this.renderControls()}
-        <Card>
-          <Image src={song.album.images[0].url} />
-          <Card.Content>
-            <Card.Header>
-              {song.name}
-            </Card.Header>
-            <Card.Meta>
-              <span>
-                {song.artists.map(a => a.name).join(', ')}
-              </span>
-              <br />
-              <span>
-                {song.album.name}
-              </span>
-            </Card.Meta>
-          </Card.Content>
-        </Card>
+        <Header>
+          <Header.Content>
+            {song.name}
+          </Header.Content>
+        </Header>
+        <Image width={300} src={song.album.images[0].url} />
+        <audio autoplay={false} src={song.preview_url} controls />
+        <h4>Artists: {song.artists.map(a => a.name).join(', ')}</h4>
+        <h4>Album: {song.album.name}</h4>
+        <p>Length: {minLength}m{secLength}s</p>
+        <p>Spotify: <a href={song.external_urls.spotify}>{song.external_urls.spotify}</a></p>
       </div>
     )
   }
@@ -81,6 +81,11 @@ Song.propTypes = {
       ),
       duration_ms: PropTypes.number,
       explicit: PropTypes.bool,
+      external_urls: PropTypes.arrayOf(
+        PropTypes.shape({
+          spotify: PropTypes.string
+        })
+      ),
       href: PropTypes.string,
       id: PropTypes.string,
       name: PropTypes.string.isRequired,
