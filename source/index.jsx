@@ -6,7 +6,8 @@ import axios from 'axios';
 // Redux stuff
 import {createStore, combineReducers} from 'redux';
 import {Provider} from 'react-redux';
-import * as reducers from './redux/reducers'
+import * as reducers from './redux/reducers';
+import { auth } from './redux/actions';
 // Base Routes
 import Home from './components/Home/Home.jsx';
 import Gallery from './components/Gallery/Gallery.jsx';
@@ -20,10 +21,7 @@ const store = createStore(finalReducer, window.__REDUX_DEVTOOLS_EXTENSION__ && w
 // Connect to Spotify
 axios('https://spotify.aztec.website')
     .then(({data}) => {
-        store.dispatch({
-            type: 'AUTH',
-            ...data
-        })
+        store.dispatch(auth(data))
     })
     .catch(console.error)
 

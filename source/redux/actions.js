@@ -11,3 +11,10 @@ export function results(results) {
     results
   }
 }
+
+export function auth(data) {
+  return {
+    type: 'AUTH',
+    ...data
+  }
+}

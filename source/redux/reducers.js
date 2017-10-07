@@ -29,3 +29,15 @@ export function spotify(state = {connected: false, access_token: null, token_typ
       return state;
   }
 }
+
+export function data(state = { results: [] }, action) {
+  switch(action.type) {
+    case 'RESULTS':
+      return {
+        ...state,
+        results: action.results
+      }
+    default:
+      return state
+  }
+}
