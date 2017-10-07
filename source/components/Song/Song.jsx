@@ -15,8 +15,8 @@ class Song extends Component {
     const hasNextPage = thisPage < (this.props.songs.length - 1);
     return (
       <div className="controls">
-        {hasPrevPage ? <Button content='Prev' icon='left arrow' labelPosition='left' onClick={(e) => { this.props.history.push(`/song/${thisPage-1}`) }} /> : null}
-        {hasNextPage ? <Button content='Next' icon='right arrow' labelPosition='right' onClick={(e) => { this.props.history.push(`/song/${thisPage+1}`) }} /> : null}
+        <Button content='Prev' disabled={!hasPrevPage} icon='left arrow' labelPosition='left' onClick={(e) => { this.props.history.push(`/song/${thisPage-1}`) }} />
+        <Button content='Next' disabled={!hasNextPage} icon='right arrow' labelPosition='right' onClick={(e) => { this.props.history.push(`/song/${thisPage+1}`) }} />
       </div>
     )
   }
