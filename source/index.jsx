@@ -14,9 +14,6 @@ import Gallery from './components/Gallery/Gallery.jsx';
 // Styles
 require('./styles/main.scss');
 
-const CLIENT_ID = '69f6f5f61dd84b0cbdc2567e27c166e5';
-const CLIENT_SECRET = 'ee9e0eccdaa4421e8d9600c8ce706453';
-
 const finalReducer = combineReducers(reducers);
 const store = createStore(finalReducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())
 
