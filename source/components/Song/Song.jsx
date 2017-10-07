@@ -14,7 +14,7 @@ class Song extends Component {
     const hasPrevPage = thisPage > 0;
     const hasNextPage = thisPage < (this.props.songs.length - 1);
     return (
-      <div>
+      <div className="controls">
         {hasPrevPage ? <Button content='Prev' icon='left arrow' labelPosition='left' onClick={(e) => { this.props.history.push(`/song/${thisPage-1}`) }} /> : null}
         {hasNextPage ? <Button content='Next' icon='right arrow' labelPosition='right' onClick={(e) => { this.props.history.push(`/song/${thisPage+1}`) }} /> : null}
       </div>
