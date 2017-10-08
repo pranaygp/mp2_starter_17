@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Header, Icon, Message } from 'semantic-ui-react'
+import { Header, Icon, Image, Message } from 'semantic-ui-react'
 import {NavLink} from 'react-router-dom'
 import {connect} from 'react-redux';
 
@@ -19,11 +19,11 @@ class MyHeader extends Component {
   render() {
     return (
       <div className='Header'>
+        <Image width={400} src='./assets/spotify.svg' />
         <Header as='h2' icon textAlign='center'>
-            <Icon name='search' circular />
-            <Header.Content>
-                Spotify Search
-            </Header.Content>
+          <Header.Content>
+            Song Search
+          </Header.Content>
         </Header>
         <ul className="nav">
           <li><NavLink isActive={this.isActive} to="/" >List</NavLink></li>

@@ -45,7 +45,7 @@ class Song extends Component {
           </Header.Content>
         </Header>
         <Image width={300} src={song.album.images[0].url} />
-        <audio autoplay={false} src={song.preview_url} controls />
+        <audio width={300} autoplay={false} src={song.preview_url} controls />
         <h4>Artists: {song.artists.map(a => a.name).join(', ')}</h4>
         <h4>Album: {song.album.name}</h4>
         <p>Length: {minLength}m{secLength}s</p>
