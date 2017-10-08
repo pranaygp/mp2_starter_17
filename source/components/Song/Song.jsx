@@ -8,11 +8,62 @@ import MyHeader from '../Header/Header.jsx';
 import styles from './Song.scss'
 
 class Song extends Component {
+  constructor(props) {
+    super();
+    this.state = {
+      songs: []
+    }
+
+    console.log('called Song constructor', props);
+
+    if(props.source === 'LIST') {
+      this.state = {
+        songs: props.songs
+          .sort((a, b) => {
+            if(props.sort.name === 'ASC') {
+              return a.name.localeCompare(b.name);
+            }
+            if(props.sort.name === 'DESC') {
+              return b.name.localeCompare(a.name);
+            }
+      
+            if(props.sort.artist === 'ASC') {
+              return a.artists[0].name.localeCompare(b.artists[0].name);
+            }
+            if(props.sort.artist === 'DESC') {
+              return b.artists[0].name.localeCompare(a.artists[0].name);
+            }
+      
+            if(props.sort.popularity === 'ASC') {
+              return b.popularity - a.popularity;
+            }
+            if(props.sort.popularity === 'DESC') {
+              return a.popularity - b.popularity;
+            }
+            return 0;
+          })
+      }
+    }
+    if(props.source === 'GALLERY') {
+      this.state = {
+        songs: props.songs
+          .filter(song => {
+            if(props.filters.singleArtist && song.artists.length > 1) {
+              return false;
+            }
+            if(props.filters.noExplicit && song.explicit) {
+              return false;
+            }
+            return true;
+          })
+      }
+    }
+  }
 
   renderControls() {
     const songID = this.props.match.params.id;
-    const song = this.props.songs.find(song => song.id === songID);
-    const thisPage = this.props.songs.indexOf(song);
+    const song = this.state.songs.find(song => song.id === songID);
+    const thisPage = this.state.songs.indexOf(song);
     const hasPrevPage = thisPage > 0;
     const hasNextPage = thisPage < (this.props.songs.length - 1);
 
@@ -20,11 +71,11 @@ class Song extends Component {
     let nextPage = null;
 
     if (hasPrevPage) {
-      prevPage = this.props.songs[thisPage-1].id;
+      prevPage = this.state.songs[thisPage-1].id;
     }
 
     if (hasNextPage) {
-      nextPage = this.props.songs[thisPage+1].id;
+      nextPage = this.state.songs[thisPage+1].id;
     }
 
     return (
@@ -37,7 +88,7 @@ class Song extends Component {
 
   render() {
     const songID = this.props.match.params.id;
-    const song = this.props.songs.find(song => song.id === songID);
+    const song = this.state.songs.find(song => song.id === songID);
 
     if(!song) {
       // missing data
@@ -103,9 +154,21 @@ Song.propTypes = {
       preview_url: PropTypes.string,
       uri: PropTypes.string
     })
-  )
+  ),
+  source: PropTypes.string.isRequired,
+  sort: PropTypes.shape({
+    name: PropTypes.string,
+    artist: PropTypes.string,
+  }),
+  filters: PropTypes.shape({
+    singleArtist: PropTypes.bool.isRequired,
+    noExplicit: PropTypes.bool.isRequired,
+  })
 }
 
 export default withRouter(connect(state => ({
-  songs: state.data.results
+  songs: state.data.results,
+  source: state.sourcePage,
+  sort: state.sort,
+  filters: state.filters
 }))(Song))

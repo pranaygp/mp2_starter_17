@@ -77,3 +77,12 @@ export function filters(state = { singleArtist: false, noExplicit: false }, acti
       return state
   }
 }
+
+export function sourcePage (state = 'LIST', action) {
+  switch (action.type) {
+    case 'SOURCE':
+      return action.source
+    default: 
+      return state
+  }
+}

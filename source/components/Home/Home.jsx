@@ -7,7 +7,7 @@ import { connect }  from 'react-redux';
 import Header from '../Header/Header.jsx';
 import SongList from '../SongList/SongList.jsx';
 
-import { sort } from '../../redux/actions';
+import { sort, source } from '../../redux/actions';
 
 import styles from './Home.scss'
 
@@ -15,6 +15,10 @@ class Home extends Component {
 
     handleItemClick(e, { name }) {
         this.props.dispatch(sort(name))
+    }
+
+    componentDidMount() {
+        this.props.dispatch(source('LIST'))
     }
 
     render() {

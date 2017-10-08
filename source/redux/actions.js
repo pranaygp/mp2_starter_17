@@ -32,3 +32,10 @@ export function filter(key) {
     key
   }
 }
+
+export function source(source) {
+  return {
+    type: 'SOURCE',
+    source
+  }
+}

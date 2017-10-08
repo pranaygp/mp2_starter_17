@@ -6,7 +6,7 @@ import { Image, Card, Menu } from 'semantic-ui-react'
 
 import Header from '../Header/Header.jsx';
 
-import { filter } from '../../redux/actions';
+import { filter, source } from '../../redux/actions';
 
 import styles from './Gallery.scss'
 
@@ -26,6 +26,10 @@ class Gallery extends Component {
 
   handleItemClick(e, { name }) {
     this.props.dispatch(filter(name))
+  }
+
+  componentDidMount() {
+    this.props.dispatch(source('GALLERY'))
   }
 
   renderSongs(songs = []) {
