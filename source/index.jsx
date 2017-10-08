@@ -1,7 +1,7 @@
 import React from 'react';
 import {render} from 'react-dom';
 import {HashRouter as Router, Route, Link} from 'react-router-dom'
-import 'semantic-ui-css/semantic.min.css';
+// import 'semantic-ui-css/semantic.min.css';
 import axios from 'axios';
 // Redux stuff
 import {createStore, combineReducers} from 'redux';

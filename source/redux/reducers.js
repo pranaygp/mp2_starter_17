@@ -35,21 +35,21 @@ export function data(state = { results: [] }, action) {
     case 'RESULTS':
       return {
         ...state,
-        results: action.results
+        results: action.results.sort((a, b) => a.name.localeCompare(b.name))
       }
     default:
       return state
   }
 }
 
-export function sort(state = { name='ASC', artist=null }, action) {
+export function sort(state = { name:'ASC', artist:null, popularity: null }, action) {
   switch (action.type) {
     case 'SORT':
-      let selectedChange;
       if (state[action.key] === null || state[action.key] === 'DESC') {
         return {
           name: null,
           artist: null,
+          popularity: null,
           [action.key]: 'ASC'
         }
       }
@@ -57,6 +57,7 @@ export function sort(state = { name='ASC', artist=null }, action) {
         return {
           name: null,
           artist: null,
+          popularity: null,
           [action.key]: 'DESC'
         }
       }
@@ -65,11 +66,12 @@ export function sort(state = { name='ASC', artist=null }, action) {
   }
 }
 
-export function filters(state = {  }, action) {
+export function filters(state = { singleArtist: false, noExplicit: false }, action) {
   switch (action.type) {
     case 'FILTER':
       return {
-        ...state
+        ...state,
+        [action.key]: !state[action.key]
       }
     default:
       return state

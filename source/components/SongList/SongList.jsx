@@ -6,8 +6,35 @@ import { Image, List } from 'semantic-ui-react'
 
 class SongList extends Component {
 
+  sortSongs(songs) {
+    return songs.sort((a, b) => {
+      if(this.props.sort.name === 'ASC') {
+        return a.name.localeCompare(b.name);
+      }
+      if(this.props.sort.name === 'DESC') {
+        return b.name.localeCompare(a.name);
+      }
+
+      if(this.props.sort.artist === 'ASC') {
+        return a.artists[0].name.localeCompare(b.artists[0].name);
+      }
+      if(this.props.sort.artist === 'DESC') {
+        return b.artists[0].name.localeCompare(a.artists[0].name);
+      }
+
+      if(this.props.sort.popularity === 'ASC') {
+        return b.popularity - a.popularity;
+      }
+      if(this.props.sort.popularity === 'DESC') {
+        return a.popularity - b.popularity;
+      }
+
+      return 0;
+    })
+  }
+        
   renderSongs(songs = []) {
-    return songs.map((song, i) => (
+    return this.sortSongs(songs).map((song, i) => (
       <List.Item key={song.id} onClick={(e) => { this.props.history.push(`/song/${i}`) }}>
         <Image width={100} height={100} src={song.album.images[0].url} />
         <List.Content>
@@ -54,11 +81,9 @@ SongList.propTypes = {
       ),
       duration_ms: PropTypes.number,
       explicit: PropTypes.bool,
-      external_urls: PropTypes.arrayOf(
-        PropTypes.shape({
-          spotify: PropTypes.string
-        })
-      ),
+      external_urls: PropTypes.shape({
+        spotify: PropTypes.string
+      }),
       href: PropTypes.string,
       id: PropTypes.string,
       name: PropTypes.string.isRequired,
@@ -66,9 +91,14 @@ SongList.propTypes = {
       preview_url: PropTypes.string,
       uri: PropTypes.string
     })
-  )
+  ),
+  sort: PropTypes.shape({
+    name: PropTypes.string,
+    artist: PropTypes.string,
+  })
 }
 
 export default withRouter(connect(state => ({
-  songs: state.data.results
+  songs: state.data.results,
+  sort: state.sort
 }))(SongList));
