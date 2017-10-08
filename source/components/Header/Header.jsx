@@ -19,7 +19,7 @@ class MyHeader extends Component {
   render() {
     return (
       <div className='Header'>
-        <Image width={400} src='./assets/spotify.svg' />
+        <Image width={400} className='logo' src='./assets/spotify.svg' />
         <Header as='h2' icon textAlign='center'>
           <Header.Content>
             Song Search
