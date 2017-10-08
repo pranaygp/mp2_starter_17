@@ -6,6 +6,7 @@
   "scripts": {
     "watch": "webpack -d --watch",
     "build": "webpack",
+    "start": "serve public/",
     "dev": "webpack-dev-server --content-base public/ --history-api-fallback"
   },
   "author": "Simon Lu",
@@ -35,8 +36,10 @@
     "react-redux": "^5.0.6",
     "react-router": "^4.0.0",
     "react-router-dom": "^4.0.0",
+    "react-waypoint": "^7.3.1",
     "redux": "^3.7.2",
     "semantic-ui-css": "^2.2.12",
-    "semantic-ui-react": "^0.74.2"
+    "semantic-ui-react": "^0.74.2",
+    "serve": "^6.2.0"
   }
 }
