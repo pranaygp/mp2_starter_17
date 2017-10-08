@@ -7,6 +7,7 @@ export function search(state={ query: "", isLoading: false }, action) {
         isLoading: true
       }
     case 'RESULTS':
+    case 'APPEND_RESULTS':
       return {
         ...state,
         isLoading: false
@@ -36,6 +37,11 @@ export function data(state = { results: [] }, action) {
       return {
         ...state,
         results: action.results.sort((a, b) => a.name.localeCompare(b.name))
+      }
+    case 'APPEND_RESULTS':
+      return {
+        ...state,
+        results: state.results.concat(action.results.sort((a, b) => a.name.localeCompare(b.name)))
       }
     default:
       return state

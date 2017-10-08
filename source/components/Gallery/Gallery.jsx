@@ -2,15 +2,36 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {withRouter} from 'react-router-dom'
 import {connect} from 'react-redux';
-import { Image, Card, Menu } from 'semantic-ui-react'
+import { Image, Card, Menu, Dimmer, Loader } from 'semantic-ui-react'
+import Waypoint from 'react-waypoint';
+import axios from 'axios';
 
 import Header from '../Header/Header.jsx';
 
-import { filter, source } from '../../redux/actions';
+import { filter, source, search, append_results } from '../../redux/actions';
 
 import styles from './Gallery.scss'
 
 class Gallery extends Component {
+
+  handleWaypointEnter() {
+    console.log('Fetching more items');
+    if(this.props.connected && !this.props.loading && this.props.query !== "") {
+      this.props.dispatch(search(this.props.query))
+      axios(`https://api.spotify.com/v1/search`, {
+        headers: {
+          'authorization': `Bearer ${this.props.token}`
+        },
+        params: {
+          q: this.props.query,
+          type: 'track',
+          offset: this.props.songs.length
+        }
+      }).then(({data}) => {
+        this.props.dispatch(append_results(data.tracks.items))
+      })
+    }
+  }
 
   filterSongs(songs) {
     return songs.filter(song => {
@@ -69,6 +90,14 @@ class Gallery extends Component {
             </Menu>
             <Card.Group className="galleryContainer" itemsPerRow={3}>
                 {this.renderSongs(this.props.songs)}
+                <Waypoint
+                  onEnter={this.handleWaypointEnter.bind(this)}
+                />
+                { this.filterSongs(this.props.songs).length > 0 ? <Card>
+                  <Dimmer active>
+                    <Loader>Loading</Loader>
+                  </Dimmer>
+                </Card> : null }
             </Card.Group>
         </div>
     );
@@ -115,10 +144,18 @@ Gallery.propTypes = {
   filters: PropTypes.shape({
     singleArtist: PropTypes.bool.isRequired,
     noExplicit: PropTypes.bool.isRequired,
-  })
+  }),
+  loading: PropTypes.bool.isRequired,
+  query: PropTypes.string.isRequired,
+  connected: PropTypes.bool.isRequired,
+  token: PropTypes.string,
 }
 
 export default withRouter(connect(state => ({
   songs: state.data.results,
-  filters: state.filters
+  filters: state.filters,
+  loading: state.search.isLoading,
+  query: state.search.query,
+  connected: state.spotify.connected,
+  token: state.spotify.access_token
 }))(Gallery));

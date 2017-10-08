@@ -2,9 +2,32 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {withRouter} from 'react-router-dom'
 import {connect} from 'react-redux';
-import { Image, List } from 'semantic-ui-react'
+import { Image, List, Dimmer, Loader } from 'semantic-ui-react'
+import Waypoint from 'react-waypoint';
+import axios from 'axios';
+
+import { search, append_results } from '../../redux/actions';
 
 class SongList extends Component {
+
+  handleWaypointEnter() {
+    console.log('Fetching more items');
+    if(this.props.connected && !this.props.loading && this.props.query !== "") {
+      this.props.dispatch(search(this.props.query))
+      axios(`https://api.spotify.com/v1/search`, {
+        headers: {
+          'authorization': `Bearer ${this.props.token}`
+        },
+        params: {
+          q: this.props.query,
+          type: 'track',
+          offset: this.props.songs.length
+        }
+      }).then(({data}) => {
+        this.props.dispatch(append_results(data.tracks.items))
+      })
+    }
+  }
 
   sortSongs(songs) {
     return songs.sort((a, b) => {
@@ -50,6 +73,14 @@ class SongList extends Component {
     return (
       <List relaxed='very' animated selection verticalAlign='middle'>
         {this.renderSongs(this.props.songs)}
+        <Waypoint
+          onEnter={this.handleWaypointEnter.bind(this)}
+        />
+        { this.props.songs.length > 0 ? <List.Item>
+          <List.Content>
+            <Loader active inline='centered'>Loading</Loader>
+          </List.Content>
+        </List.Item> : null }
       </List>
     );
   }
@@ -95,10 +126,18 @@ SongList.propTypes = {
   sort: PropTypes.shape({
     name: PropTypes.string,
     artist: PropTypes.string,
-  })
+  }),
+  loading: PropTypes.bool.isRequired,
+  query: PropTypes.string.isRequired,
+  connected: PropTypes.bool.isRequired,
+  token: PropTypes.string,
 }
 
 export default withRouter(connect(state => ({
   songs: state.data.results,
-  sort: state.sort
+  sort: state.sort,
+  loading: state.search.isLoading,
+  query: state.search.query,
+  connected: state.spotify.connected,
+  token: state.spotify.access_token
 }))(SongList));

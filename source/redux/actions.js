@@ -12,6 +12,13 @@ export function results(results) {
   }
 }
 
+export function append_results(results) {
+  return {
+    type: 'APPEND_RESULTS',
+    results
+  }
+}
+
 export function auth(data) {
   return {
     type: 'AUTH',
