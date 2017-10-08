@@ -10,20 +10,34 @@ import styles from './Song.scss'
 class Song extends Component {
 
   renderControls() {
-    const thisPage = Number(this.props.match.params.id);
+    const songID = this.props.match.params.id;
+    const song = this.props.songs.find(song => song.id === songID);
+    const thisPage = this.props.songs.indexOf(song);
     const hasPrevPage = thisPage > 0;
     const hasNextPage = thisPage < (this.props.songs.length - 1);
+
+    let prevPage = null;
+    let nextPage = null;
+
+    if (hasPrevPage) {
+      prevPage = this.props.songs[thisPage-1].id;
+    }
+
+    if (hasNextPage) {
+      nextPage = this.props.songs[thisPage+1].id;
+    }
+
     return (
       <div className="controls">
-        <Button content='Prev' disabled={!hasPrevPage} icon='left arrow' labelPosition='left' onClick={(e) => { this.props.history.push(`/song/${thisPage-1}`) }} />
-        <Button content='Next' disabled={!hasNextPage} icon='right arrow' labelPosition='right' onClick={(e) => { this.props.history.push(`/song/${thisPage+1}`) }} />
+        <Button content='Prev' disabled={!hasPrevPage} icon='left arrow' labelPosition='left' onClick={(e) => { this.props.history.push(`/song/${prevPage}`) }} />
+        <Button content='Next' disabled={!hasNextPage} icon='right arrow' labelPosition='right' onClick={(e) => { this.props.history.push(`/song/${nextPage}`) }} />
       </div>
     )
   }
 
   render() {
-    const thisPage = Number(this.props.match.params.id);
-    const song = this.props.songs[thisPage];
+    const songID = this.props.match.params.id;
+    const song = this.props.songs.find(song => song.id === songID);
 
     if(!song) {
       // missing data

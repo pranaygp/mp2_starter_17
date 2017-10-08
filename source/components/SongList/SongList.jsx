@@ -35,7 +35,7 @@ class SongList extends Component {
         
   renderSongs(songs = []) {
     return this.sortSongs(songs).map((song, i) => (
-      <List.Item key={song.id} onClick={(e) => { this.props.history.push(`/song/${i}`) }}>
+      <List.Item key={song.id} onClick={(e) => { this.props.history.push(`/song/${song.id}`) }}>
         <Image width={100} height={100} src={song.album.images[0].url} />
         <List.Content>
           <List.Header>{song.name}</List.Header>

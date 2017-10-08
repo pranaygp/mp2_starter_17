@@ -30,7 +30,7 @@ class Gallery extends Component {
 
   renderSongs(songs = []) {
     return this.filterSongs(songs).map((song, i) => (
-        <Card key={song.id} onClick={(e) => { this.props.history.push(`/song/${i}`) }}>
+        <Card key={song.id} onClick={(e) => { this.props.history.push(`/song/${song.id}`) }}>
             <Image src={song.album.images[0].url} />
             <Card.Content>
             <Card.Header>
