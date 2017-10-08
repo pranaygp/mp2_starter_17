@@ -31,11 +31,45 @@ export function spotify(state = {connected: false, access_token: null, token_typ
 }
 
 export function data(state = { results: [] }, action) {
-  switch(action.type) {
+  switch (action.type) {
     case 'RESULTS':
       return {
         ...state,
         results: action.results
+      }
+    default:
+      return state
+  }
+}
+
+export function sort(state = { name='ASC', artist=null }, action) {
+  switch (action.type) {
+    case 'SORT':
+      let selectedChange;
+      if (state[action.key] === null || state[action.key] === 'DESC') {
+        return {
+          name: null,
+          artist: null,
+          [action.key]: 'ASC'
+        }
+      }
+      if (state[action.key] === 'ASC') {
+        return {
+          name: null,
+          artist: null,
+          [action.key]: 'DESC'
+        }
+      }
+    default:
+      return state
+  }
+}
+
+export function filters(state = {  }, action) {
+  switch (action.type) {
+    case 'FILTER':
+      return {
+        ...state
       }
     default:
       return state

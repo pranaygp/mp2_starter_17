@@ -18,3 +18,17 @@ export function auth(data) {
     ...data
   }
 }
+
+export function sort(key) {
+  return {
+    type: 'SORT',
+    key
+  }
+}
+
+export function filter(key) {
+  return {
+    type: 'FILTER',
+    key
+  }
+}
